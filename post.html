@@ -1,0 +1,123 @@
+
+
+<!-- CREATE POST -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post</title>
+</head>
+<body>
+    <h1>Create New Post</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br><br>
+        
+        <label for="meta_title">Meta Title:</label><br>
+        <input type="text" id="meta_title" name="meta_title"><br><br>
+        
+        <label for="meta_description">Meta Description:</label><br>
+        <textarea id="meta_description" name="meta_description"></textarea><br><br>
+        
+        <label for="published_at">Published Date:</label><br>
+        <input type="date" id="published_at" name="published_at"><br><br>
+        
+        <label for="author">Author:</label><br>
+        <select id="author" name="author">
+            {% for author in authors %}
+            <option value="{{ author.id }}">{{ author.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="categories">Categories:</label><br>
+        <select id="categories" name="categories" multiple>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="tags">Tags:</label><br>
+        <select id="tags" name="tags" multiple>
+            {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="featured_image">Featured Image:</label><br>
+        <input type="file" id="featured_image" name="featured_image"><br><br>
+        
+        <label for="youtube_link">YouTube Link:</label><br>
+        <input type="url" id="youtube_link" name="youtube_link"><br><br>
+        
+        <button type="submit">Create Post</button>
+    </form>
+</body>
+</html>
+
+
+
+<!-- POST LIST -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post List</title>
+    <meta name="description" content="Explore our collection of blog posts.">
+    <meta name="keywords" content="blog, posts, articles, news">
+    <meta name="robots" content="index, follow">
+    <!-- Add other meta tags as needed -->
+</head>
+<body>
+    <h1>Blog Post List</h1>
+    <ul>
+        {% for post in posts %}
+            <li><a href="{% url 'post_detail' slug=post.slug %}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+<!-- POST DETAILS -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.meta_title }}</title>
+    <meta name="description" content="{{ post.meta_description }}">
+    <!-- Additional SEO meta tags -->
+    <meta name="author" content="{{ post.author.name }}">
+    <meta name="keywords" content="{% for tag in post.tags.all %}{{ tag.name }}, {% endfor %}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <!-- Add more SEO meta tags here if needed -->
+</head>
+<body>
+    <article>
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <!-- Add more content as needed -->
+    </article>
+    <aside>
+        <h2>Related Posts</h2>
+        <ul>
+            {% for related_post in post.related_posts %}
+                <li><a href="{{ related_post.get_absolute_url }}">{{ related_post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+</body>
+</html>
+
+
+
+

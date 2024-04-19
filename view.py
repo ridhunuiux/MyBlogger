@@ -158,7 +158,7 @@ def delete_tag(request, slug):
 
 
 # ++++++++++++++++++++++++++++++++
-#           Tag 
+#           POST 
 # ++++++++++++++++++++++++++++++++
 
 
@@ -214,6 +214,12 @@ def post_create(request):
     tags = Tag.objects.all()
     return render(request, 'post_create.html', {'authors': authors, 'categories': categories, 'tags': tags})
 
+
+
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post_list.html', {'posts': posts})
 
 
 

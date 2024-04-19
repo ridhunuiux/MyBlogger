@@ -42,6 +42,11 @@ class Author(models.Model):
         return self.user.username
     
 
+from django.db import models
+from django.utils import timezone
+from django.urls import reverse
+from django.template.defaultfilters import slugify
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
@@ -54,7 +59,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category)
     tags = models.ManyToManyField(Tag)
     featured_image = models.ImageField(upload_to='images/', null=True, blank=True)
-    youtube_link = models.URLField(blank=True, null=True)  # Field for YouTube video link
+    youtube_link = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -72,12 +77,11 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['-published_at']  # Order posts by published date
+        ordering = ['-published_at']
 
     @property
     def related_posts(self):
         return Post.objects.filter(categories__in=self.categories.all()).exclude(id=self.id)[:3]
 
     def get_seo_title(self):
-        # You can customize this method to generate SEO-friendly titles
         return f"{self.title} - Your Blog Name"
