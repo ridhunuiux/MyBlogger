@@ -85,3 +85,40 @@ class Post(models.Model):
 
     def get_seo_title(self):
         return f"{self.title} - Your Blog Name"
+
+
+
+# Blogpost with SEO content
+
+from django.db import models
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.CharField(max_length=100)
+    publish_date = models.DateField()
+    tags = models.CharField(max_length=200)
+    
+    # SEO Fields
+    meta_title = models.CharField(max_length=200)
+    meta_description = models.CharField(max_length=250)
+    meta_keywords = models.CharField(max_length=250)
+    og_title = models.CharField(max_length=200)
+    og_description = models.CharField(max_length=250)
+    og_image = models.URLField()
+    og_type = models.CharField(max_length=50)
+    robots = models.CharField(max_length=100)
+    contributor = models.CharField(max_length=100)
+    yandex_verification = models.CharField(max_length=100)
+    msvalidate = models.CharField(max_length=100)
+    copyright = models.CharField(max_length=100)
+    viewport = models.CharField(max_length=100)
+    content_type = models.CharField(max_length=100)
+    ua_compatible = models.CharField(max_length=100)
+    theme_color = models.CharField(max_length=50)
+    navbutton_color = models.CharField(max_length=50)
+    mobile_web_app_capable = models.CharField(max_length=10)
+    apple_mobile_web_app_capable = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.title
